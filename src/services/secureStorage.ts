@@ -43,4 +43,4 @@ export const deleteSecureData = async (
   }
 
   await SecureStore.deleteItemAsync(key);
-};
+}; 

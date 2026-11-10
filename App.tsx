@@ -36,7 +36,7 @@ export default function App() {
 
       <Text style={styles.status}>
         {user ? `Selamat datang, ${user.name}` : 'Belum ada pengguna login'}
-      </Text>
+      </Text> 
     </View>
   );
 }
