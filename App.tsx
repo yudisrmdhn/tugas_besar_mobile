@@ -1,20 +1,45 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+
+import { useEffect } from 'react';
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  StyleSheet,
+} from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import { useAppStore } from './src/store/useAppStore';
+import HomeScreen from './src/app/index';
 
 export default function App() {
+  const isLoading = useAppStore((state) => state.isLoading);
+  const loadUserFromStorage = useAppStore(
+    (state) => state.loadUserFromStorage
+  );
+
+  useEffect(() => {
+    loadUserFromStorage();
+  }, [loadUserFromStorage]);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+      {isLoading ? (
+        <View style={styles.container}>
+          <ActivityIndicator size="large" />
+          <Text>Memuat data pengguna...</Text>
+        </View>
+      ) : (
+        <HomeScreen />
+      )}
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
   },
 });

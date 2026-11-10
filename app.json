@@ -1,8 +1,10 @@
+
 {
   "expo": {
     "name": "SehatSigap",
-    "slug": "SehatSigap",
+    "slug": "sehatsigap",
     "version": "1.0.0",
+    "jsEngine": "hermes",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -18,8 +20,7 @@
       },
       "predictiveBackGestureEnabled": false
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
+    "platforms": ["ios", "android"],
+    "plugins": ["expo-secure-store"]
   }
 }
