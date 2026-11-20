@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 
 import MapViewNative, {
-  PROVIDER_GOOGLE,
   Region,
 } from 'react-native-maps';
 
@@ -48,7 +47,6 @@ const AMBULANCES: Location[] = [
 function MapView({ currentLocation }: MapViewProps) {
   const userLocation = currentLocation ?? DEFAULT_LOCATION;
 
-  // Mengoptimalkan perhitungan wilayah awal peta
   const initialRegion = useMemo<Region>(
     () => ({
       latitude: userLocation.latitude,
@@ -59,7 +57,7 @@ function MapView({ currentLocation }: MapViewProps) {
     [userLocation.latitude, userLocation.longitude]
   );
 
-  // Mengoptimalkan pembuatan marker rumah sakit
+  // Marker rumah sakit
   const hospitalMarkers = useMemo(
     () =>
       HOSPITALS.map((hospital, index) => (
@@ -73,7 +71,7 @@ function MapView({ currentLocation }: MapViewProps) {
     []
   );
 
-  // Mengoptimalkan pembuatan marker ambulans
+  // Marker ambulans
   const ambulanceMarkers = useMemo(
     () =>
       AMBULANCES.map((ambulance, index) => (
@@ -87,7 +85,6 @@ function MapView({ currentLocation }: MapViewProps) {
     []
   );
 
-  // Callback ketika peta selesai dimuat
   const handleMapReady = useCallback(() => {
     console.log('Peta SehatSigap siap digunakan');
   }, []);
@@ -96,16 +93,16 @@ function MapView({ currentLocation }: MapViewProps) {
     <View style={styles.container}>
       <MapViewNative
         style={styles.map}
-        provider={PROVIDER_GOOGLE}
         initialRegion={initialRegion}
         showsUserLocation={false}
         showsMyLocationButton={false}
         showsCompass
         showsScale
+        mapType="standard"
         onMapReady={handleMapReady}
         accessibilityLabel="Peta lokasi SehatSigap"
       >
-        {/* Marker lokasi pengguna */}
+        {/* Lokasi pengguna */}
         <CustomMarker
           coordinate={userLocation}
           title="Lokasi Pengguna"
@@ -166,4 +163,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
- 

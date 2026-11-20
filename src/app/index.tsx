@@ -6,6 +6,7 @@ import {
   Text,
   StyleSheet,
   Alert,
+  Pressable,
 } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -14,7 +15,13 @@ import MapView from '../components/MapView';
 import EmergencyButton from '../components/EmergencyButton';
 import colors from '../constants/colors';
 
-export default function HomeScreen() {
+interface HomeScreenProps {
+  onOpenDashboard?: () => void;
+}
+
+export default function HomeScreen({
+  onOpenDashboard,
+}: HomeScreenProps) {
   const handleEmergency = useCallback(() => {
     Alert.alert(
       'Konfirmasi Darurat',
@@ -56,17 +63,35 @@ export default function HomeScreen() {
             </Text>
           </View>
 
-          <View
-            style={styles.statusContainer}
-            accessible={true}
-            accessibilityRole="text"
-            accessibilityLabel="Status aplikasi siap"
-          >
-            <View style={styles.statusDot} />
+          <View style={styles.headerActions}>
+            <View
+              style={styles.statusContainer}
+              accessible={true}
+              accessibilityRole="text"
+              accessibilityLabel="Status aplikasi siap"
+            >
+              <View style={styles.statusDot} />
 
-            <Text style={styles.status}>
-              Siap
-            </Text>
+              <Text style={styles.status}>
+                Siap
+              </Text>
+            </View>
+
+            {onOpenDashboard && (
+              <Pressable
+                style={({ pressed }) => [
+                  styles.dashboardButton,
+                  pressed && styles.dashboardButtonPressed,
+                ]}
+                onPress={onOpenDashboard}
+                accessibilityRole="button"
+                accessibilityLabel="Buka Dashboard"
+              >
+                <Text style={styles.dashboardButtonText}>
+                  Dashboard
+                </Text>
+              </Pressable>
+            )}
           </View>
         </View>
 
@@ -134,6 +159,12 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
 
+  headerActions: {
+    alignItems: 'flex-end',
+    gap: 8,
+    flexShrink: 0,
+  },
+
   // STATUS
   statusContainer: {
     flexDirection: 'row',
@@ -155,6 +186,24 @@ const styles = StyleSheet.create({
 
   status: {
     color: colors.primary,
+    fontSize: 12,
+    fontWeight: '600',
+  },
+
+  // DASHBOARD BUTTON
+  dashboardButton: {
+    backgroundColor: colors.primary,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 12,
+  },
+
+  dashboardButtonPressed: {
+    opacity: 0.7,
+  },
+
+  dashboardButtonText: {
+    color: colors.white,
     fontSize: 12,
     fontWeight: '600',
   },
@@ -182,7 +231,6 @@ const styles = StyleSheet.create({
   disclaimer: {
     fontSize: 11,
     color: colors.muted,
-    textAlign: 'center', 
-  },  
+    textAlign: 'center',
+  },
 });
- 
