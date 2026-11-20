@@ -1,46 +1,43 @@
+
 import * as SecureStore from 'expo-secure-store';
 
-console.log('SecureStore tersedia:', Object.keys(SecureStore));
-console.log(
-  'getItemAsync:',
-  typeof SecureStore.getItemAsync
-);
-console.log(
-  'setItemAsync:',
-  typeof SecureStore.setItemAsync
-);
-console.log(
-  'deleteItemAsync:',
-  typeof SecureStore.deleteItemAsync
-);
+export const SECURE_KEYS = {
+  USER_DATA: 'user_data',
+  AUTH_TOKEN: 'auth_token',
+  USER_NIK: 'user_nik',
+  USER_CREDENTIALS: 'user_credentials',
+} as const;
 
 export const saveSecureData = async (
   key: string,
   value: string
 ): Promise<void> => {
-  if (typeof SecureStore.setItemAsync !== 'function') {
-    throw new Error('SecureStore.setItemAsync tidak tersedia');
+  try {
+    await SecureStore.setItemAsync(key, value);
+  } catch (error) {
+    console.error(`Gagal menyimpan data dengan key ${key}:`, error);
+    throw error;
   }
-
-  await SecureStore.setItemAsync(key, value);
 };
 
 export const getSecureData = async (
   key: string
 ): Promise<string | null> => {
-  if (typeof SecureStore.getItemAsync !== 'function') {
-    throw new Error('SecureStore.getItemAsync tidak tersedia');
+  try {
+    return await SecureStore.getItemAsync(key);
+  } catch (error) {
+    console.error(`Gagal membaca data dengan key ${key}:`, error);
+    throw error;
   }
-
-  return await SecureStore.getItemAsync(key);
 };
 
 export const deleteSecureData = async (
   key: string
 ): Promise<void> => {
-  if (typeof SecureStore.deleteItemAsync !== 'function') {
-    throw new Error('SecureStore.deleteItemAsync tidak tersedia');
+  try {
+    await SecureStore.deleteItemAsync(key);
+  } catch (error) {
+    console.error(`Gagal menghapus data dengan key ${key}:`, error);
+    throw error;
   }
-
-  await SecureStore.deleteItemAsync(key);
-}; 
+};
